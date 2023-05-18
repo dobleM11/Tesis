@@ -7,25 +7,32 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Tesis.styles.css" asp-append-version="true" />
+
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tesis</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img class="center-block" src="~/img/logo curico.svg" width="50px" height="50px" /> </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between doc-icon m-1">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                      @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li>
+
+                        </li>*@
                     </ul>
+                    @*<a class="d-none d-md-block btn btn-claveunica btn-m"><img src="~/img/claveunica.f53cf24.svg"/>Iniciar sesión</a>*@
+                    <a class="btn " style="background-color: #093f75; color:white" asp-controller="Home" asp-action="Index"><img class="center-block" src="~/img/claveunica.f53cf24.svg" />Mi Usuario</a>
                 </div>
             </div>
         </nav>
@@ -44,6 +51,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

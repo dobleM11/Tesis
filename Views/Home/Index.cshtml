@@ -1,9 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-    RenderSection("navbar", required: true);
+    //ViewData["Title"] = "Inicio de sesión";
+    Layout = "";
 }
+<!--
+    Título: Página de inicio de sesión
+    Descripción: En esta parte se dará a elegir entre iniciar sesión de forma manual
+    si ya creó una cuenta o permite iniciar sesión con clave única permitiendo saltarse el registro.
+-->
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inicio de sesión</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Tesis.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/img/logo curico.svg" width="50px" height="50px" /> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
 
-<div class="text-center">
-    @*<h1 class="display-4">Iniciar sesión</h1>*@
-   
-</div>
+            <div class="text-center card">
+                <h1 class="card-title">Bienvenido a inicio de sesión</h1>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="btn-group-vertical" role="group">
+                                @* <div class="btn-container">
+                                <button type="button" class="btn btn-lg btn-block  btn-secondary" onclick="location.href='@Url.Action("Login", "Account")' ">Correo electrónico</button>
+                                </div>*@
+                               
+                                <div class="btn-container">
+                                    <a class="btn" style="background-color: #093f75" asp-controller="Lobby" asp-action="Inicio"><img src="~/img/Clave unica.svg" /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - Tesis
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+
