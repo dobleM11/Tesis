@@ -1,0 +1,35 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Inicir sesión";
+}
+<link rel="stylesheet" href="~/css/loginIn.css" />
+
+<div class="text-center card col-md-8 mx-auto">
+    <h1 class="card-title">Iniciar sesión</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <form asp-action="LoginIn" method="post">
+                    <div class="mb-3">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>  
+                    <div class="mb-3">
+                        <input type="text" asp-for="Run" class="form-control" id="Run" placeholder="Ingresa tu RUN" oninput="formatRun(this)">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" type="password" id="contrasena" class="form-control custom-input" placeholder="Ingresa tu Calve" />
+                        <button class="btn btn-outline-secondary" onclick="mostrarContrasena()" type="button">
+                            <i id="iconoOjo" class="fa-solid fa-eye"></i>
+                            <i id="iconoOjoCerrado" class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
+                    <div class="mb-3 d-grid">
+                        <button type="submit" class="btn btn-primary" id="Ingresar">Ingresa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/LoginIn.js"></script>

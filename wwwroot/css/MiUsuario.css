@@ -1,0 +1,12 @@
+﻿.container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.izquierda {
+    float: left;
+}
+
+.derecha {
+    float: right;
+}

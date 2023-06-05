@@ -1,0 +1,104 @@
+﻿@using System.Security.Claims;
+@model EmpleadoTurnosViewModel
+@{
+
+    ViewData["Title"] = "MiUsuario";
+    var rol = 1;
+    Empleado empleado = new Empleado();
+    if(Model.Empleado != null) {
+        empleado = Model.Empleado;
+        rol = Model.Empleado.RolId;
+    }
+}
+<link rel="stylesheet" href="~/css/MiUsuario.css" />
+
+<div class="container">
+    <div class="izquierda">
+        <h3>Bienvenido a MiUsuario</h3>
+    </div>
+    <div class="derecha">
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-danger float-right" onclick="return confirm('¿Deseas cerrar la sesión?')">
+            <span class="material-symbols-outlined align-middle">logout</span>
+            Cerrar sesión
+        </a>
+
+    </div>
+</div>
+<div class="card col-md-10 mx-auto" style="margin-top:10px;">
+    <div class="card-body">
+        <div class="container">
+            <div class="izquierda">
+                <h1 class="card-title">Datos</h1>
+            </div>
+            <div class="derecha">
+                @if(rol != 1) {
+                    <a asp-controller="Home" asp-action="Inicio" class="btn btn-outline-primary float-right">
+                        <span class="material-symbols-outlined align-middle">business_center</span>
+                        Vista Empleado
+                    </a>
+                }
+
+            </div>
+        </div>
+        
+        
+        <h4>Nombre: @User.Identity.Name</h4>
+        <h4>RUN: @User.FindFirstValue(ClaimTypes.NameIdentifier)</h4>
+        @if(rol != 1) {
+            <h4>Rol: @empleado.Rol.Nombre</h4>
+        }
+    </div>
+</div>
+<div class="card col-md-8 mx-auto" style="margin-top:10px;">
+    <div class="card-body">
+        <div class="container">
+            <div class="izquierda">
+                <h1 class="card-title">Mis Horas</h1>
+            </div>
+            <div class="derecha">
+                <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-primary float-right">
+                    <span class="material-symbols-outlined align-middle ">today</span>
+                    agendar Hora
+                    </a>
+            </div>
+        </div>
+
+        @if(Model.Turnos.Count != 0) {
+            <div class="accordion" id="accordionExample">
+                @foreach(var U in Model.Turnos) {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading_@U.Id">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@U.Id" aria-expanded="true" aria-controls="collapse_@U.Id">
+                                @U.Seccion.Nombre
+                            </button>
+                        </h2>
+                        <div id="collapse_@U.Id" class="accordion-collapse collapse" aria-labelledby="heading_@U.Id" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="card" style="width: 18rem;">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Fecha: @U.FechaHora</li>
+                                        <li class="list-group-item">Hora: @U.FechaHora</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <a asp-controller="" asp-action="" class="btn btn-outline-warning float-right">
+                                    <span class="material-symbols-outlined align-middle">edit_calendar</span>
+                                    Editar
+                                </a>
+                                <a asp-controller="" asp-action="" class="btn btn-outline-danger float-right">
+                                    <span class="material-symbols-outlined align-middle">event_busy</span>
+                                    Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        } else {
+            <h4>No tiene horas agendadas</h4>
+        }
+
+    </div>
+</div>
+<script src="~/js/LoginIn.js"></script>

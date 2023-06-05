@@ -7,8 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\" />
+    <Content Remove="wwwroot\css\AgendarHoraGeneral.css" />
+    <Content Remove="wwwroot\js\AgendarHoraGeneral.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\AgendarHoraGeneral.css" />
+    <None Include="wwwroot\css\loginIn.css" />
+    <None Include="wwwroot\js\AgendarHoraGeneral.js" />
+    <None Include="wwwroot\js\LoginIn.js" />
   </ItemGroup>
 
   <ItemGroup>

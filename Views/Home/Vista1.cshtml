@@ -1,0 +1,55 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="card">
+    <h5 class="card-header">Sección 1</h5>
+    <div class="card-body">
+        <h5 class="card-title">Descripción</h5>
+        <p class="card-text">En esta sección se pueden reaizar las siguientes actividades</p>
+
+        <h5 class="card-title">Tramites:</h5>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_1">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1" aria-expanded="true" aria-controls="collapse_1">
+                        tramite 1
+                    </button>
+                </h2>
+                <div id="collapse_1" class="accordion-collapse collapse" aria-labelledby="heading_1" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Descripción del tramite y los documentos que se necesitan.
+                        <ul>
+                            <li>Documento 1</li>
+                            <li>Documento 2</li>
+                            <li>Documento 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_2" aria-expanded="true" aria-controls="collapse_2">
+                        tramite 2
+                    </button>
+                </h2>
+                <div id="collapse_2" class="accordion-collapse collapse" aria-labelledby="heading_2 " data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Descripción del tramite y los documentos que se necesitan.
+                        <ul>
+                            <li>Documento 1</li>
+                            <li>Documento 2</li>
+                            <li>Documento 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <a asp-controller="Home" asp-action="Inicio" class="btn btn-outline-danger float-right">Cancelar</a>
+        <a asp-controller="" asp-action="" class="btn btn-outline-dark float-right">Pedir hora</a>
+    </div>
+</div>

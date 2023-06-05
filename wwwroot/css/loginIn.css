@@ -1,0 +1,16 @@
+﻿#iconoOjo{
+    display: none;
+}
+
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear {
+    display: none;
+}
+#Ingresar {
+    background-color: #0062cc;
+}
+
+.validation-summary-errors ul {
+    padding-left: 0;
+    list-style: none;
+}

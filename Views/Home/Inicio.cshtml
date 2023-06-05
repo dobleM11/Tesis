@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Inicio";
+}
+<div class="accordion" id="accordionExample">
+    @*es un ciclo for para crear los acordeones de forma automatica*@
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_1">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1" aria-expanded="true" aria-controls="collapse_1">
+                Sección 1
+            </button>
+        </h2>
+        <div id="collapse_1" class="accordion-collapse collapse show" aria-labelledby="heading_1" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                Descripción de que hace la sección.
+                <a asp-controller="Home" asp-action="Vista1">Ver más</a>
+            </div>
+            <div class="card-footer text-end">
+                <a asp-controller="" asp-action="" class="btn btn-outline-dark float-right">Pedir hora</a>
+            </div>
+        </div>
+    </div>
+
+</div>      

@@ -1,0 +1,47 @@
+﻿@using System.Globalization;
+@model TurnosSeccionesViewModel;
+@{
+    ViewData["Title"] = "Agendar Hora";
+    var turnos = Model.Turnos;
+    var secciones = Model.Secciones;
+    var seccion = Model.Turno;
+}
+
+<link rel="stylesheet" href="~/css/AgendarHoraGeneral.css" />
+<div class="card text-center">
+
+<form asp-action="AgendarHoraGeneral" method="post">
+        <div class="card-header">
+            <h2>Agendar Hora</h2>
+        </div>
+        <div class="mb-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-sm-6 mx-auto">
+            <h5 class="card-title">Seleccione sección</h5>            
+            <select class="form-select" asp-for="Turno.SeccionId" aria-label="Default select example">
+                    @foreach(var U in Model.Secciones) {
+                        @if(U.Id == 1) {
+                            <option value=@U.Id selected>@U.Nombre</option>
+                        } else {
+                            <option value=@U.Id>@U.Nombre</option>
+                        }
+                    }
+            </select>
+            </div>
+
+
+            <div class="form-group col-sm-6 mx-auto">
+                <h5>seleccione fecha y hora</h5>
+                <input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" min="@DateTime.Now.ToString("s")" />
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <button type="submit" class="btn btn-primary" id="Ingresar">Agendar</button>
+        </div>
+    </form>
+</div>
+
+
+<script src="~/css/AgendarHoraGeneral.js"></script>
