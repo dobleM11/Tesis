@@ -20,7 +20,21 @@ namespace Tesis.Controllers {
         public IActionResult Login() {
             return View();
         }
+        [HttpGet]
+        public IActionResult Sugerencias() {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Sugerencias(Sugerencia s) {
+            _context.Sugerencias.Add(
+                        new Sugerencia() {
+                            FechaHora = DateTime.Now,
+                            Texto = s.Texto
+                        });
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Inicio));
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {

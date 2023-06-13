@@ -7,6 +7,7 @@ namespace Tesis.Models {
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Seccion> Secciones { get; set; }
         public DbSet<Turno> Turnos { get; set; }
+        public DbSet<Sugerencia> Sugerencias { get; set; }
 
 
 
@@ -21,7 +22,7 @@ namespace Tesis.Models {
             modelBuilder.Entity<Rol>().HasKey(x => x.Id); //aquí se setea la clave primaria
             modelBuilder.Entity<Seccion>().HasKey(x => x.Id); //aquí se setea la clave primaria
             modelBuilder.Entity<Turno>().HasKey(x => x.Id); //aquí se setea la clave primaria
-
+            modelBuilder.Entity<Sugerencia>().HasKey(x => x.Id); //aquí se setea la clave primaria
         }
     }
 }
