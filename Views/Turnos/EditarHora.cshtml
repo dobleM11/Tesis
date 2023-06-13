@@ -1,0 +1,45 @@
+﻿@using System.Globalization;
+@model Turno;
+@{
+    ViewData["Title"] = "Editar Hora";
+    var t = Model;
+}
+
+<link rel="stylesheet" href="~/css/EditarHora.css" />
+<div class="card text-center">
+
+    <form asp-action="EditarHora" method="post">
+        <input type="hidden" class="form-control" asp-for="Id" value="@Model.Id">
+        <div class="card-header">
+            <h2>Editar Hora</h2>
+        </div>
+        <div class="mb-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-sm-6 mx-auto">
+                <h5 class="card-title">Seleccione sección</h5>
+                <fieldset disabled>
+                <select class="form-select">
+                    <option value=@Model.Seccion.Id>@Model.Seccion.Nombre</option>
+                </select>
+                </fieldset>
+            </div>
+
+
+            <div class="form-group col-sm-6 mx-auto">
+                <h5>seleccione fecha y hora</h5>
+                @*<input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" />*@
+                <input asp-for="FechaHora" id="horaFecha" class="form-control" asp-format="{0:dd/MM/yyyy hh:mm tt}" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")" />
+                <div id="horaFechaHelp" class="form-text">Por favor, elige minutos múltiplos de 10.</div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary" id="Ingresar">Editar</button>
+            <a asp-controller="Turnos" asp-action="MiUsuario" class="btn btn-danger float-right">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+<script src="~/css/AgendarHoraGeneral.js"></script>

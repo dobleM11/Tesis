@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tesis.Models;
@@ -22,6 +24,7 @@ namespace Tesis.Controllers {
             };
             return View(etvm);
         }
+
         [HttpGet]
         public IActionResult AgendarHoraGeneral() {
             var u = GetUsuarioActual();
@@ -45,11 +48,18 @@ namespace Tesis.Controllers {
             tsvm.Secciones = secciones;
             tsvm.Turnos = turnos;
 
-            if(DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Saturday) {
+            if(
+                 DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
+                tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
+                tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
+                tsvm.Turno.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
+                tsvm.Turno.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
+                tsvm.Turno.FechaHora.Minute % 10 != 0 // se verifica que se haya seleccionado un minuto multiplo de 10
+                ) {
                 ModelState.AddModelError("", "Debe ingresar una hora y fecha validas");
                 return View(tsvm);
             } else {
-                if(turnosGeneral != null) {
+                if(turnosGeneral.Count!=0) {
                     ModelState.AddModelError("", "Ese horario ya está ocupado");
                     return View(tsvm);
                 } else {
@@ -62,7 +72,7 @@ namespace Tesis.Controllers {
                     if(horaActiva) {
                         ModelState.AddModelError("", "Ya posee una Hora en espera para esa sección");
                         return View(tsvm);
-                    } else {
+                    } else {                        
                         _context.Turnos.Add(
                         new Turno() {
                             UsuarioRun = u.Run,
@@ -76,6 +86,54 @@ namespace Tesis.Controllers {
                     }
                 }
             }
+        }
+
+        [HttpGet]
+        public IActionResult EditarHora(int turnoId) {
+            Turno U = _context.Turnos.Include(e => e.Seccion).FirstOrDefault(u => u.Id == turnoId);
+            return View(U);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarHora(Turno t) {
+            var user = GetUsuarioActual();
+            var U = _context.Turnos.Include(e => e.Seccion).FirstOrDefault(u => u.Id == t.Id);
+            List<Turno> turnosUsuario = _context.Turnos.Where(t => t.UsuarioRun.Equals(user.Run)).ToList();
+            List<Turno> turnosGeneral = _context.Turnos.Where(x => x.FechaHora == t.FechaHora && x.Seccion == t.Seccion).ToList();
+
+            if(
+                DateTime.Compare(t.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
+                t.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
+                t.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
+                t.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
+                t.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
+                t.FechaHora.Minute % 10 != 0 // se verifica que se haya seleccionado un minuto multiplo de 10
+                ) { 
+                ModelState.AddModelError("", "Debe ingresar una hora y fecha validas"); // da error si alguna de las anteriores verificaciones se cumple
+                return View(U);
+            } else {
+                if(turnosGeneral.Count != 0) {
+                    ModelState.AddModelError("", "Ese horario ya está ocupado");
+                    return View(U);
+                } else {
+                    U.FechaHora = t.FechaHora;
+                    _context.Turnos.Update(U);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(MiUsuario));
+                }
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EliminarHora(int turnoId) {
+            var U = _context.Turnos.FirstOrDefault(u=>u.Id==turnoId);
+            if(U == null) {
+                return NotFound();
+            } else {
+                _context.Remove(U);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(MiUsuario));
         }
 
         private Usuario GetUsuarioActual() {

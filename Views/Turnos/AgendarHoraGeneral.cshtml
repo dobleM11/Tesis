@@ -34,11 +34,14 @@
 
             <div class="form-group col-sm-6 mx-auto">
                 <h5>seleccione fecha y hora</h5>
-                <input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" min="@DateTime.Now.ToString("s")" />
+                @*<input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" />*@
+                <input asp-for="Turno.FechaHora" id="horaFecha" class="form-control" asp-format="{0:dd/MM/yyyy hh:mm tt}" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")"/>
+                <div id="horaFechaHelp" class="form-text">Por favor, elegir minutos múltiplos de 10 y un horario entre las 9 y las 2 de la tarde.</div>
             </div>
         </div>
-        <div class="card-footer text-muted">
+        <div class="card-footer">            
             <button type="submit" class="btn btn-primary" id="Ingresar">Agendar</button>
+            <a asp-controller="Turnos" asp-action="MiUsuario" class="btn btn-danger float-right">Cancelar</a>
         </div>
     </form>
 </div>

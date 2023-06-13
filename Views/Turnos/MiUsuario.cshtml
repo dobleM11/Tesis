@@ -49,7 +49,7 @@
         }
     </div>
 </div>
-<div class="card col-md-8 mx-auto" style="margin-top:10px;">
+<div class="card col-md-8 mx-auto" style="margin-top:10px; margin-bottom:50px;">
     <div class="card-body">
         <div class="container">
             <div class="izquierda">
@@ -76,17 +76,17 @@
                             <div class="accordion-body">
                                 <div class="card" style="width: 18rem;">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Fecha: @U.FechaHora</li>
-                                        <li class="list-group-item">Hora: @U.FechaHora</li>
+                                        <li class="list-group-item">Fecha: @U.FechaHora.Date.ToString("dd-MM-yyyy")</li>
+                                        <li class="list-group-item">Hora: @U.FechaHora.ToString("hh:mm tt")</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-footer text-end">
-                                <a asp-controller="" asp-action="" class="btn btn-outline-warning float-right">
+                                <a asp-controller="Turnos" asp-action="EditarHora" asp-route-turnoId="@U.Id" class="btn btn-outline-warning float-right">
                                     <span class="material-symbols-outlined align-middle">edit_calendar</span>
                                     Editar
                                 </a>
-                                <a asp-controller="" asp-action="" class="btn btn-outline-danger float-right">
+                                <a asp-controller="Turnos" asp-action="EliminarHora" asp-route-turnoId="@U.Id" class="btn btn-outline-danger float-right" onclick="return confirm('¿Deseas eliminar su hora?')">
                                     <span class="material-symbols-outlined align-middle">event_busy</span>
                                     Eliminar
                                 </a>

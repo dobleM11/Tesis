@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\css\AgendarHoraGeneral.css" />
+    <Content Remove="wwwroot\css\EditarHora.css" />
     <Content Remove="wwwroot\js\AgendarHoraGeneral.js" />
   </ItemGroup>
 
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\EditarHora.css" />
     <None Include="wwwroot\css\AgendarHoraGeneral.css" />
     <None Include="wwwroot\css\loginIn.css" />
     <None Include="wwwroot\js\AgendarHoraGeneral.js" />
