@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tesis.Models;
 using Tesis.ViewModel;
+using Nager.Date;
 
 namespace Tesis.Controllers {
     public class TurnosController : Controller {
@@ -48,13 +49,24 @@ namespace Tesis.Controllers {
             tsvm.Secciones = secciones;
             tsvm.Turnos = turnos;
 
+            // Obtener el año actual
+            int year = DateTime.Now.Year;
+
+            // Crea una instancia del servicio de feriados de Nager.Date para Chile
+            var publicHolidays = DateSystem.GetPublicHolidays(year,CountryCode.CL);
+
+            // Verifica si t.FechaHora es un feriado
+            bool esFeriado = publicHolidays.Any(holiday => holiday.Date.Date == tsvm.Turno.FechaHora.Date);// se comprueba si el día seleccionado es feriado
+
+
             if(
                  DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
                 tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
                 tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
                 tsvm.Turno.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
                 tsvm.Turno.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
-                tsvm.Turno.FechaHora.Minute % 10 != 0 // se verifica que se haya seleccionado un minuto multiplo de 10
+                tsvm.Turno.FechaHora.Minute % 10 != 0 || // se verifica que se haya seleccionado un minuto multiplo de 10
+                esFeriado 
                 ) {
                 ModelState.AddModelError("", "Debe ingresar una hora y fecha validas");
                 return View(tsvm);
