@@ -14,7 +14,7 @@ namespace Tesis.Controllers {
         public IActionResult Inicio() {
             return View();
         }
-        public IActionResult Vista1() {
+        public IActionResult Dirección_de_Aseo_y_Ornato() {
             return View();
         }
         public IActionResult Login() {

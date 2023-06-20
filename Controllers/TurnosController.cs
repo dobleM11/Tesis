@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tesis.Models;
 using Tesis.ViewModel;
-using Nager.Date;
+
+
 
 namespace Tesis.Controllers {
+    [Authorize]
     public class TurnosController : Controller {
         private readonly AppDbContext _context;
 
@@ -18,7 +19,7 @@ namespace Tesis.Controllers {
         public IActionResult MiUsuario() {
             var u = GetUsuarioActual();
             Empleado e = _context.Empleados.Include(e => e.Rol).Include(e => e.Seccion).FirstOrDefault(e => e.Run.Equals(u.Run));
-            List<Turno> turnos = _context.Turnos.Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
+            List<Turno> turnos = _context.Turnos.Include(e => e.Seccion).Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
             EmpleadoTurnosViewModel etvm = new EmpleadoTurnosViewModel() {
                 Empleado = e,
                 Turnos = turnos
@@ -29,13 +30,18 @@ namespace Tesis.Controllers {
         [HttpGet]
         public IActionResult AgendarHoraGeneral() {
             var u = GetUsuarioActual();
-            List<Turno> turnos = _context.Turnos.Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
-            List<Seccion> secciones = _context.Secciones.ToList();
-            TurnosSeccionesViewModel tsvm = new TurnosSeccionesViewModel();
-            tsvm.Secciones = secciones;
-            tsvm.Turnos = turnos;
-            tsvm.Turno = new Turno();
-            return View(tsvm);
+            if(u != null) {
+                List<Turno> turnos = _context.Turnos.Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
+                List<Seccion> secciones = _context.Secciones.ToList();
+                TurnosSeccionesViewModel tsvm = new TurnosSeccionesViewModel();
+                tsvm.Secciones = secciones;
+                tsvm.Turnos = turnos;
+                tsvm.Turno = new Turno();
+                return View(tsvm);
+            } else {
+                return RedirectToAction("LoginIn", "Auth");
+            }
+
         }
 
         [HttpPost]
@@ -50,28 +56,21 @@ namespace Tesis.Controllers {
             tsvm.Turnos = turnos;
 
             // Obtener el año actual
-            int year = DateTime.Now.Year;
-
-            // Crea una instancia del servicio de feriados de Nager.Date para Chile
-            var publicHolidays = DateSystem.GetPublicHolidays(year,CountryCode.CL);
-
-            // Verifica si t.FechaHora es un feriado
-            bool esFeriado = publicHolidays.Any(holiday => holiday.Date.Date == tsvm.Turno.FechaHora.Date);// se comprueba si el día seleccionado es feriado
-
+            bool esFeriado = await FeriadoAsync(tsvm.Turno.FechaHora);
 
             if(
-                 DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
-                tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
-                tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
-                tsvm.Turno.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
-                tsvm.Turno.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
-                tsvm.Turno.FechaHora.Minute % 10 != 0 || // se verifica que se haya seleccionado un minuto multiplo de 10
-                esFeriado 
-                ) {
+            DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
+           tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
+           tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
+           tsvm.Turno.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
+           tsvm.Turno.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
+           tsvm.Turno.FechaHora.Minute % 10 != 0 || // se verifica que se haya seleccionado un minuto multiplo de 10
+           esFeriado
+           ) {
                 ModelState.AddModelError("", "Debe ingresar una hora y fecha validas");
                 return View(tsvm);
             } else {
-                if(turnosGeneral.Count!=0) {
+                if(turnosGeneral.Count != 0) {
                     ModelState.AddModelError("", "Ese horario ya está ocupado");
                     return View(tsvm);
                 } else {
@@ -84,7 +83,7 @@ namespace Tesis.Controllers {
                     if(horaActiva) {
                         ModelState.AddModelError("", "Ya posee una Hora en espera para esa sección");
                         return View(tsvm);
-                    } else {                        
+                    } else {
                         _context.Turnos.Add(
                         new Turno() {
                             UsuarioRun = u.Run,
@@ -100,6 +99,27 @@ namespace Tesis.Controllers {
             }
         }
 
+        private async Task<bool> FeriadoAsync(DateTime fechaHora) {
+            bool esFeriado = false;
+            // Crea una instancia del servicio de feriados de Nager.Date para Chile
+            string apiUrl = $"https://apis.digital.gob.cl/fl/feriados{DateTime.Now.Year}";
+            using(HttpClient client = new HttpClient()) {
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+                if(response.IsSuccessStatusCode) {
+                    // Leer la respuesta JSON
+                    string json = await response.Content.ReadAsStringAsync();
+
+                    // Analizar el JSON y obtener los feriados
+                    var feriados = Newtonsoft.Json.JsonConvert.DeserializeObject<Feriado[]>(json);
+
+                    // Verificar si t.FechaHora es un feriado
+                    esFeriado = feriados.Any(feriado => feriado.Fecha.Date.Day == fechaHora.Day && feriado.Fecha.Date.Month == fechaHora.Month);
+
+                }
+            }
+            return esFeriado;
+        }
+
         [HttpGet]
         public IActionResult EditarHora(int turnoId) {
             Turno U = _context.Turnos.Include(e => e.Seccion).FirstOrDefault(u => u.Id == turnoId);
@@ -108,6 +128,9 @@ namespace Tesis.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> EditarHora(Turno t) {
+
+            bool esFeriado = await FeriadoAsync(t.FechaHora);// se comprueba si el día seleccionado es feriado
+
             var user = GetUsuarioActual();
             var U = _context.Turnos.Include(e => e.Seccion).FirstOrDefault(u => u.Id == t.Id);
             List<Turno> turnosUsuario = _context.Turnos.Where(t => t.UsuarioRun.Equals(user.Run)).ToList();
@@ -119,8 +142,9 @@ namespace Tesis.Controllers {
                 t.FechaHora.DayOfWeek == DayOfWeek.Saturday || // se verifica que la hora es sabado
                 t.FechaHora.Hour < 9 || // se verifica que la hora sea mayor o igual a las 9
                 t.FechaHora.Hour > 14 || // se verifica que la hora sea menor a las 14
-                t.FechaHora.Minute % 10 != 0 // se verifica que se haya seleccionado un minuto multiplo de 10
-                ) { 
+                t.FechaHora.Minute % 30 != 0 || // se verifica que se haya seleccionado un minuto multiplo de 30
+                esFeriado
+                ) {
                 ModelState.AddModelError("", "Debe ingresar una hora y fecha validas"); // da error si alguna de las anteriores verificaciones se cumple
                 return View(U);
             } else {
@@ -130,15 +154,15 @@ namespace Tesis.Controllers {
                 } else {
                     U.FechaHora = t.FechaHora;
                     _context.Turnos.Update(U);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(MiUsuario));
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(MiUsuario));
                 }
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> EliminarHora(int turnoId) {
-            var U = _context.Turnos.FirstOrDefault(u=>u.Id==turnoId);
+            var U = _context.Turnos.FirstOrDefault(u => u.Id == turnoId);
             if(U == null) {
                 return NotFound();
             } else {
@@ -153,4 +177,10 @@ namespace Tesis.Controllers {
             return usuario;
         }
     }
+}
+public class Feriado {
+    public DateTime Fecha { get; set; }
+    public string Nombre { get; set; }
+    public string Tipo { get; set; }
+    public string Irrenunciable { get; set; }
 }

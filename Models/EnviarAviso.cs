@@ -1,6 +1,6 @@
-﻿using System.Net.Mail;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Net;
-using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace Tesis.Models {
     public class EnviarAviso : IHostedService {
@@ -8,7 +8,7 @@ namespace Tesis.Models {
         private readonly AppDbContext _appDbContext;
 
         public EnviarAviso(AppDbContext appDbContext) {
-            _appDbContext = appDbContext;   
+            _appDbContext = appDbContext;
         }
 
         public Task StartAsync(CancellationToken cancellationToken) {
@@ -29,12 +29,12 @@ namespace Tesis.Models {
         }
 
         private void EnviarCorreo(object? state) {
-            var turnosDiaSiguiente = _appDbContext.Turnos.Include(a => a.Usuario).Include(a => a.Seccion).Where(a=>a.FechaHora.Date== DateTime.Now.AddDays(1).Date);
-            foreach (var item in turnosDiaSiguiente){
+            var turnosDiaSiguiente = _appDbContext.Turnos.Include(a => a.Usuario).Include(a => a.Seccion).Where(a => a.FechaHora.Date == DateTime.Now.AddDays(1).Date);
+            foreach(var item in turnosDiaSiguiente) {
                 string remitente = "aviso@municipalidad.com";
                 string destinatario = item.Usuario.Mail;
                 string asunto = "Recordatorio de turno";
-                string mensaje = "El día "+ DateTime.Now.AddDays(1).Date + "usted tiene una hora registrada para "+item.Seccion.Nombre+"a las "+item.FechaHora.TimeOfDay+".";
+                string mensaje = "El día " + DateTime.Now.AddDays(1).Date + "usted tiene una hora registrada para " + item.Seccion.Nombre + "a las " + item.FechaHora.TimeOfDay + ".";
                 SmtpClient smtpClient = new SmtpClient("servidor_smtp");
                 smtpClient.Credentials = new NetworkCredential("usuario", "contraseña");
 
@@ -42,7 +42,7 @@ namespace Tesis.Models {
 
                 smtpClient.Send(mailMessage);
             }
-            
+
         }
 
         public Task StopAsync(CancellationToken cancellationToken) {

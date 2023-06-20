@@ -35,7 +35,8 @@
                 <h5>seleccione fecha y hora</h5>
                 @*<input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" />*@
                 <input asp-for="Turno.FechaHora" id="horaFecha" class="form-control" asp-format="{0:dd/MM/yyyy hh:mm tt}" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")"/>
-                <div id="horaFechaHelp" class="form-text">Por favor, elegir minutos múltiplos de 10 y un horario entre las 9 y las 2 de la tarde.</div>
+
+                <div id="horaFechaHelp" class="form-text">Por favor elija un horario entre las 9 y las 2 de la tarde y recuerde que las horas son cada 30 minutos.</div>
             </div>
         </div>
         <div class="card-footer">            

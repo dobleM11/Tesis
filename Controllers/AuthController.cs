@@ -57,8 +57,8 @@ namespace Tesis.Controllers {
                 //si no los hay se crean
                 _context.Secciones.Add(
                     new Seccion() {
-                        Nombre = "Sección 1",
-                        Descripcion = "Sección de prueba"
+                        Nombre = "Dirección de Aseo y Ornato",
+                        Descripcion = "Dirección de Aseo y Ornato, Transporte y Movilización, es la Unidad de línea asesora y operativa, de dependencia del Alcalde, encargada del Aseo y Ornato de los bienes nacionales de uso público existente en la Comuna, del servicio de recolección de residuos domiciliarios y disposición final en relleno sanitario. "
                     }
                 );
 
@@ -75,6 +75,22 @@ namespace Tesis.Controllers {
                         SeccionId = 1
                     }
                 );
+                _context.Empleados.Add(
+                    new Empleado() {
+                        Run = "88.888.888-8",
+                        Nombre = "usuario2 usuario2",
+                        RolId = 3,
+                        SeccionId = 1
+                    }
+                );
+                _context.Empleados.Add(
+                    new Empleado() {
+                        Run = "77.777.777-7",
+                        Nombre = "usuario3 usuario3",
+                        RolId = 2,
+                        SeccionId = 1
+                    }
+                );
             }
             await _context.SaveChangesAsync();
 
@@ -85,6 +101,37 @@ namespace Tesis.Controllers {
                     new Usuario() {
                         Run = "99.999.999-9",
                         Nombre = "usuario1 usuario1",
+                        Mail = "usuario1@usuario.cl",
+                        Rolid = 1,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt
+                    }
+                );
+                _context.Usuarios.Add(
+                    new Usuario() {
+                        Run = "88.888.888-8",
+                        Nombre = "usuario2 usuario2",
+                        Mail = "usuario2@usuario.cl",
+                        Rolid = 1,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt
+                    }
+                );
+                _context.Usuarios.Add(
+                    new Usuario() {
+                        Run = "77.777.777-7",
+                        Nombre = "usuario3 usuario3",
+                        Mail = "usuario3@usuario.cl",
+                        Rolid = 1,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt
+                    }
+                );
+                _context.Usuarios.Add(
+                    new Usuario() {
+                        Run = "66.666.666-6",
+                        Nombre = "usuario4 usuario4",
+                        Mail = "usuario4@usuario.cl",
                         Rolid = 1,
                         PasswordHash = passwordHash,
                         PasswordSalt = passwordSalt

@@ -2,14 +2,11 @@
 
 #nullable disable
 
-namespace Tesis.Migrations
-{
+namespace Tesis.Migrations {
     /// <inheritdoc />
-    public partial class addMail : Migration
-    {
+    public partial class addMail : Migration {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.AddColumn<string>(
                 name: "Mail",
                 table: "Usuarios",
@@ -19,8 +16,7 @@ namespace Tesis.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropColumn(
                 name: "Mail",
                 table: "Usuarios");
