@@ -12,8 +12,8 @@ using Tesis.Models;
 namespace Tesis.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230613194536_sugerencias")]
-    partial class sugerencias
+    [Migration("20230622184402_nuevoServer")]
+    partial class nuevoServer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,6 +143,10 @@ namespace Tesis.Migrations
                 {
                     b.Property<string>("Run")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()

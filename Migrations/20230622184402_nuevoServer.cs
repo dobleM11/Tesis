@@ -1,46 +1,71 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Tesis.Migrations {
+namespace Tesis.Migrations
+{
     /// <inheritdoc />
-    public partial class migracion : Migration {
+    public partial class nuevoServer : Migration
+    {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder) {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.CreateTable(
                 name: "Roles",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Secciones",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Secciones", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sugerencias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Texto = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sugerencias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
-                columns: table => new {
+                columns: table => new
+                {
                     Run = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rolid = table.Column<int>(type: "int", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Usuarios", x => x.Run);
                     table.ForeignKey(
                         name: "FK_Usuarios_Roles_Rolid",
@@ -52,13 +77,15 @@ namespace Tesis.Migrations {
 
             migrationBuilder.CreateTable(
                 name: "Empleados",
-                columns: table => new {
+                columns: table => new
+                {
                     Run = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RolId = table.Column<int>(type: "int", nullable: false),
                     SeccionId = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Empleados", x => x.Run);
                     table.ForeignKey(
                         name: "FK_Empleados_Roles_RolId",
@@ -76,7 +103,8 @@ namespace Tesis.Migrations {
 
             migrationBuilder.CreateTable(
                 name: "Turnos",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioRun = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -84,7 +112,8 @@ namespace Tesis.Migrations {
                     SeccionId = table.Column<int>(type: "int", nullable: false),
                     Asistencia = table.Column<bool>(type: "bit", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Turnos", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Turnos_Secciones_SeccionId",
@@ -127,9 +156,13 @@ namespace Tesis.Migrations {
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder) {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.DropTable(
                 name: "Empleados");
+
+            migrationBuilder.DropTable(
+                name: "Sugerencias");
 
             migrationBuilder.DropTable(
                 name: "Turnos");
