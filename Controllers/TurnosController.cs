@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Security.Claims;
 using Tesis.Models;
 using Tesis.ViewModel;
@@ -48,16 +49,18 @@ namespace Tesis.Controllers {
         public async Task<IActionResult> AgendarHoraGeneral(TurnosSeccionesViewModel tsvm) {
             var u = GetUsuarioActual();
             List<Turno> turnosUsuario = _context.Turnos.Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
-            List<Turno> turnosGeneral = _context.Turnos.Where(t => t.FechaHora == tsvm.Turno.FechaHora && t.Seccion == tsvm.Turno.Seccion).ToList();
+            List<Turno> turnosGeneral = _context.Turnos.Where(t => t.SeccionId == tsvm.Turno.SeccionId).ToList();
 
             List<Turno> turnos = _context.Turnos.Where(t => t.UsuarioRun.Equals(u.Run)).ToList();
             List<Seccion> secciones = _context.Secciones.ToList();
             tsvm.Secciones = secciones;
             tsvm.Turnos = turnos;
 
+
             // Obtener el año actual
             bool esFeriado = await FeriadoAsync(tsvm.Turno.FechaHora);
 
+            bool ocupado = false;
             if(
             DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) <= 0 || // se compara si la fecha y hora ingresada es despues de la fecha y hora actual
            tsvm.Turno.FechaHora.DayOfWeek == DayOfWeek.Sunday || // se verifica que la hora es domingo 
@@ -70,7 +73,7 @@ namespace Tesis.Controllers {
                 ModelState.AddModelError("", "Debe ingresar una hora y fecha validas");
                 return View(tsvm);
             } else {
-                if(turnosGeneral.Count != 0) {
+                if(turnosGeneral.Any(item => DateTime.Compare(item.FechaHora, tsvm.Turno.FechaHora) == 0)) {
                     ModelState.AddModelError("", "Ese horario ya está ocupado");
                     return View(tsvm);
                 } else {
