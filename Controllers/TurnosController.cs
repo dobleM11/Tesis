@@ -79,7 +79,7 @@ namespace Tesis.Controllers {
                 } else {
                     bool horaActiva = false;
                     foreach(var item in turnosUsuario) {
-                        if(item.SeccionId == tsvm.Turno.SeccionId && DateTime.Compare(tsvm.Turno.FechaHora, DateTime.Now) > 0) {
+                        if(item.SeccionId == tsvm.Turno.SeccionId && DateTime.Compare(item.FechaHora, DateTime.Now) > 0) {
                             horaActiva = true;
                         }
                     }

@@ -47,6 +47,11 @@ button.accept-policy {
   line-height: 60px;
 }
 
+@font-face {
+    font-family: 'Frutiger';
+    src: url('/font/Frutiger.woff2') format('woff2'), url('/font/Frutiger.woff') format('woff');
+}
+
 body {
-    font-family: 'Tahoma';
+    font-family: 'Frutiger', sans-serif;
 }
