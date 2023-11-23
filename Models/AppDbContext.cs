@@ -23,6 +23,7 @@ namespace Tesis.Models {
             modelBuilder.Entity<Seccion>().HasKey(x => x.Id); //aquí se setea la clave primaria
             modelBuilder.Entity<Turno>().HasKey(x => x.Id); //aquí se setea la clave primaria
             modelBuilder.Entity<Sugerencia>().HasKey(x => x.Id); //aquí se setea la clave primaria
+          
         }
     }
 }

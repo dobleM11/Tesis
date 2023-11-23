@@ -141,6 +141,9 @@ namespace Tesis.Migrations
                     b.Property<string>("Run")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Faltas")
+                        .HasColumnType("int");
+
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

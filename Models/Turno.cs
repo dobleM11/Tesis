@@ -8,7 +8,7 @@
         public DateTime FechaHora { get; set; } // variable de la fecha y hora
 
         public int SeccionId { get; set; } // variable de la id de la sección
-        public Seccion Seccion { get; set; }
+        public Seccion Seccion { get; set; }    
         public bool Asistencia { get; set; } // se marca si se asistió o no a la cita
 
     }
