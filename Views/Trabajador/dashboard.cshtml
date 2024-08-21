@@ -1,0 +1,348 @@
+<link rel="stylesheet" href="~/css/MiUsuario.css" />
+@model DashboardViewModel
+@{
+}
+
+<style>
+    .nav-pills .nav-link.active {
+        background-color: #6A86C3;
+        color: white;
+    }
+
+    .nav-pills .nav-link {
+        color: #6A86C3;
+    }
+</style>
+
+<div class="container">
+    <div class="izquierda mt-1">
+        <h3>Bienvenido a Administración de @Model.Seccion.Nombre</h3>
+    </div>
+    <div class="derecha mt-1">
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-danger float-right" onclick="return confirm('¿Deseas cerrar la sesión?')">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Cerrar sesión
+        </a>
+    </div>
+</div>
+<div class="row w-100">
+
+    <div class="d-md-block d-lg-none">
+        <nav>
+            <div class="nav nav-pills justify-content-center" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                    <i class="fa-solid fa-table-list"></i>
+                    Asistencia
+                </a>
+                <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Estadísticas
+                </a>
+                <a class="nav-link" id="nav-reclamos-tab" data-bs-toggle="tab" href="#nav-reclamos" role="tab" aria-controls="nav-reclamos" aria-selected="false">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-file-pen me-2"></i>
+                        <div>
+                            <div>Sugerenciasz<br/> y Reclamos</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="d-none d-lg-block col-lg-3" style="border-right: 1px solid #dee2e6; font-size: 20px;">
+        <nav>
+            <div class="nav flex-column nav-pills text-center" id="nav-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                    <i class="fa-solid fa-table-list"></i>
+                    Asistencia
+                </a>
+                <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Estadísticas
+                </a>
+                <a class="nav-link" id="nav-reclamos-tab" data-bs-toggle="tab" href="#nav-reclamos" role="tab" aria-controls="nav-reclamos" aria-selected="false">
+                    <i class="fa-solid fa-file-pen"></i>
+                    Sugerencias y Reclamos
+                </a>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="col-lg-6">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="float-end">
+                    <form id="formFecha">
+                        <div class="row">
+                            <div class="col">
+                                <input id="fecha" name="fecha" class="form-control" type="date" />
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn" id="btnIr" style="background-color:#6A86C3; color:white">Ir</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="justify-content-center">
+                    <table class="table mt-5 ">
+                        <thead>
+                            <tr>
+                                <th hidden>id</th>
+                                <th>Hora</th>
+                                <th>Nombre</th>
+                                <th>Rut</th>
+                                <th>Trámite</th>
+                                <th colspan="2">Asistencia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-body" class="center">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                <form id="formFechaEstadistica">
+                    <div class="row">
+                        <div class="col">
+                            <input id="fechaEstadistica" name="fechaEstadistica" class="form-control" type="month" />
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn" id="btnIrEstadistica" style="background-color:#6A86C3; color:white">Ir</button>
+                        </div>
+                    </div>
+                </form>
+
+                <canvas id="lineChart"></canvas>
+
+            </div>
+            <div class="tab-pane fade table-responsive" id="nav-reclamos" role="tabpanel" aria-labelledby="nav-reclamos-tab">
+                <a href="@Url.Action("DescargarExcel", "Trabajador")" class="btn mt-1 me-1 derecha" style="background-color:#6A86C3; color:white">Descargar Datos  <i class="fa-solid fa-file-arrow-down"></i></a>
+
+                <table class="table mt-2">
+                    <thead>
+                        <tr>
+                            <th hidden>id</th>
+                            <th>Fecha y Hora</th>
+                            <th>Tipo</th>
+                            <th colspan="4">Sugerencia o Reclamo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-bod-Reclamo" class="center">
+                        @foreach(var u in Model.sugerencias) {
+                            <tr>
+                                @if(u.SeccionId == 3) {
+                                    <td hidden>@u.Id</td>
+                                    <td class="table-secondary" title="@u.TipoSugerencia General">@u.FechaHora</td>
+                                    <td class="table-secondary" title="@u.TipoSugerencia General">@u.TipoSugerencia</td>
+                                    <td colspan="4" class="table-secondary" title="@u.TipoSugerencia General">@u.Texto</td>
+                                } else {
+                                    <td hidden>@u.Id</td>
+                                    <td title="@u.TipoSugerencia Seccion @u.Seccion.Nombre">@u.FechaHora</td>
+                                    <td title="@u.TipoSugerencia Seccion @u.Seccion.Nombre">@u.TipoSugerencia</td>
+                                    <td colspan="4" title="@u.TipoSugerencia Seccion @u.Seccion.Nombre">@u.Texto</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Función para obtener la fecha de hoy en formato YYYY-MM-DD
+        function obtenerFechaDeHoy() {
+            var hoy = new Date();
+            var dia = ("0" + hoy.getDate()).slice(-2);
+            var mes = ("0" + (hoy.getMonth() + 1)).slice(-2);
+            var año = hoy.getFullYear();
+            return año + "-" + mes + "-" + dia;
+        }
+
+        // Asignar la fecha de hoy al input de fecha
+        $('#fecha').val(obtenerFechaDeHoy());
+
+        // Función para obtener la lista por fecha
+        function obtenerListaPorFecha(fecha) {
+            $.ajax({
+                url: '@Url.Action("getListaPorFecha", "Trabajador")',
+                type: 'GET',
+                data: { fecha: fecha },
+                success: function (data) {
+                    // Limpiar tabla
+                    $('#tabla-body').empty();
+                    console.log(data);
+                    // Llenar tabla con los nuevos datos
+                    $.each(data, function (index, item) {
+                        var columnClass = '';
+                        var buttonsDisabled = '';
+                        var cursorStyle = '';
+
+                        if (item.asistido === 1) {
+                            columnClass = 'class="text-danger"'; // Texto rojo
+                            buttonsDisabled = 'disabled';
+                            cursorStyle = 'cursor: default;';
+                        } else if (item.asistido === 2) {
+                            columnClass = 'class="text-success"'; // Texto verde
+                            buttonsDisabled = 'disabled';
+                            cursorStyle = 'cursor: default;';
+                        }
+
+                        var row = '<tr>' +
+                            '<td hidden>' + item.id + '</td>' +
+                            '<td ' + columnClass + '>' + item.hora + '</td>' +
+                            '<td ' + columnClass + '>' + item.nombre + '</td>' +
+                            '<td ' + columnClass + '>' + item.rut + '</td>' +
+                            '<td ' + columnClass + '>' + item.tramite + '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="/Trabajador/UsuarioAsistio/' + item.id + '" class="text-success ' + buttonsDisabled + '" style="' + cursorStyle + '">' +
+                            '<i class="fa-solid fa-check"></i> Asistió' +
+                            '</a>' +
+                            '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="/Trabajador/UsuarioFalto/' + item.id + '" class="text-danger ' + buttonsDisabled + '" style="' + cursorStyle + '">' +
+                            '<i class="fa-solid fa-xmark"></i> Faltó' +
+                            '</a>' +
+                            '</td>' +
+                            '</tr>';
+                        $('#tabla-body').append(row);
+
+                        // Agregar confirmación de clic
+                        $('#tabla-body').find('a').off('click').on('click', function (event) {
+                            var link = $(this).attr('href');
+                            var action = $(this).text().trim();
+
+                            if (action === 'Asistió' || action === 'Faltó') {
+                                event.preventDefault();
+
+                                var confirmation = confirm('¿Estás seguro de que deseas marcar como "' + action + '"?');
+
+                                if (confirmation) {
+                                    window.location.href = link;
+                                }
+                            }
+                        });
+
+                        // Si los botones están deshabilitados, prevenir su funcionamiento
+                        if (buttonsDisabled) {
+                            $('#tabla-body').find('a').on('click', function (event) {
+                                event.preventDefault();
+                                return false;
+                            }).on('dragstart', function (event) {
+                                event.preventDefault();
+                                return false;
+                            }).css('pointer-events', 'none'); // Desactivar eventos de puntero para evitar clics y arrastres
+                        }
+                    });
+                },
+                error: function () {
+                    alert('Error al obtener los datos.');
+                }
+            });
+        }
+
+        // Obtener lista para la fecha de hoy al cargar la página
+        obtenerListaPorFecha(obtenerFechaDeHoy());
+
+        // Manejar el evento de envío del formulario
+        $('#formFecha').submit(function (event) {
+            event.preventDefault(); // Prevenir el envío automático del formulario
+
+            var fecha = $('#fecha').val();
+            obtenerListaPorFecha(fecha);
+        });
+    });
+
+
+    // Obtener el contexto del lienzo donde se dibujará el gráfico
+    const ctx = document.getElementById('lineChart').getContext('2d');
+
+    // Datos del gráfico (inicialmente vacío)
+    const data = {
+        labels: [],  // Aquí se añadirán las fechas (días del mes)
+        datasets: [{
+            label: 'Solicitudes',
+            data: [],
+            borderColor: 'rgba(106, 134, 195, 1)',
+            borderWidth: 1,
+            fill: false
+        }]
+    };
+
+    // Opciones del gráfico
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    // Crear el gráfico
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+
+    // Función para obtener los datos del servidor y actualizar el gráfico
+    function obtenerListaPorFechaEstadistica(fecha) {
+        $.ajax({
+            url: '/Trabajador/getListaEstadisticaPorFecha',  // URL del controlador y acción
+            type: 'GET',
+            data: { fecha: fecha },
+            success: function (data) {
+                // Procesar datos para el gráfico
+                const labels = [];
+                const counts = [];
+
+                // Recorrer los datos recibidos del servidor
+                $.each(data, function (index, item) {
+                    labels.push(item.fecha);  // Asegúrate que la propiedad 'fecha' coincide con lo devuelto por el controlador
+                    counts.push(item.count);  // Asegúrate que la propiedad 'count' coincide con lo devuelto por el controlador
+                });
+
+                // Actualizar datos del gráfico
+                lineChart.data.labels = labels;
+                lineChart.data.datasets[0].data = counts;
+                lineChart.update();
+            },
+            error: function () {
+                alert('Error al obtener los datos.');
+            }
+        });
+    }
+
+    // Event listener para el formulario de selección de fecha
+    $('#formFechaEstadistica').submit(function (e) {
+        e.preventDefault();
+        const fecha = $('#fechaEstadistica').val();
+        obtenerListaPorFechaEstadistica(fecha + '-01');  // Añadir el día para formar una fecha válida
+    });
+
+    // Función para obtener el mes y año actual en formato YYYY-MM
+    function obtenerMesActual() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        return `${year}-${month}`;
+    }
+
+    // Cargar datos del mes actual al cargar la página
+    $(document).ready(function () {
+        const mesActual = obtenerMesActual();
+        $('#fechaEstadistica').val(mesActual);  // Setear el valor del input al mes actual
+        obtenerListaPorFechaEstadistica(mesActual + '-01');  // Cargar datos del mes actual
+    });
+</script>
+

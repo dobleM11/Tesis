@@ -43,3 +43,9 @@ function formatRun(input) {
     // Asigna el valor formateado al campo de texto
     input.value = run;
 }
+
+    function mostrarDetalles(fecha, hora, seccion) {
+        document.getElementById('fechaModal').innerHTML = 'Fecha: ' + fecha;
+    document.getElementById('horaModal').innerHTML = 'Hora: ' + hora;
+    document.getElementById('seccionModal').innerHTML = 'Sección: ' + seccion;
+    }

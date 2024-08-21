@@ -12,8 +12,8 @@ using Tesis.Models;
 namespace Tesis.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231123193040_1")]
-    partial class _1
+    [Migration("20240713220017_xd")]
+    partial class xd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,14 @@ namespace Tesis.Migrations
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("RolId")
                         .HasColumnType("int");
@@ -100,13 +108,51 @@ namespace Tesis.Migrations
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("SeccionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoSugerencia")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SeccionId");
+
                     b.ToTable("Sugerencias");
+                });
+
+            modelBuilder.Entity("Tesis.Models.Tramite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SeccionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Solicitudes")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeccionId");
+
+                    b.ToTable("Tramites");
                 });
 
             modelBuilder.Entity("Tesis.Models.Turno", b =>
@@ -120,10 +166,19 @@ namespace Tesis.Migrations
                     b.Property<bool>("Asistencia")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("FechaHora")
+                    b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SeccionId")
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("HoradeEntrada")
+                        .HasColumnType("time");
+
+                    b.Property<int?>("SeccionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TramiteId")
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioRun")
@@ -133,6 +188,8 @@ namespace Tesis.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SeccionId");
+
+                    b.HasIndex("TramiteId");
 
                     b.HasIndex("UsuarioRun");
 
@@ -192,11 +249,37 @@ namespace Tesis.Migrations
                     b.Navigation("Seccion");
                 });
 
-            modelBuilder.Entity("Tesis.Models.Turno", b =>
+            modelBuilder.Entity("Tesis.Models.Sugerencia", b =>
                 {
                     b.HasOne("Tesis.Models.Seccion", "Seccion")
-                        .WithMany("Turnos")
+                        .WithMany()
                         .HasForeignKey("SeccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Seccion");
+                });
+
+            modelBuilder.Entity("Tesis.Models.Tramite", b =>
+                {
+                    b.HasOne("Tesis.Models.Seccion", "Seccion")
+                        .WithMany("Tramites")
+                        .HasForeignKey("SeccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Seccion");
+                });
+
+            modelBuilder.Entity("Tesis.Models.Turno", b =>
+                {
+                    b.HasOne("Tesis.Models.Seccion", null)
+                        .WithMany("Turnos")
+                        .HasForeignKey("SeccionId");
+
+                    b.HasOne("Tesis.Models.Tramite", "Tramite")
+                        .WithMany()
+                        .HasForeignKey("TramiteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -206,7 +289,7 @@ namespace Tesis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Seccion");
+                    b.Navigation("Tramite");
 
                     b.Navigation("Usuario");
                 });
@@ -232,6 +315,8 @@ namespace Tesis.Migrations
             modelBuilder.Entity("Tesis.Models.Seccion", b =>
                 {
                     b.Navigation("Empleados");
+
+                    b.Navigation("Tramites");
 
                     b.Navigation("Turnos");
                 });

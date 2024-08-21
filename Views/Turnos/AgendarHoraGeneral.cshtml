@@ -1,5 +1,4 @@
-﻿@using System.Globalization;
-@model TurnosSeccionesViewModel;
+﻿@model TurnosSeccionesViewModel;
 @{
     ViewData["Title"] = "Agendar Hora";
     var turnos = Model.Turnos;
@@ -18,9 +17,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
         <div class="card-body row">
-            <div class="form-group col-sm-6 mx-auto">
-            <h5 class="card-title">Seleccione sección</h5>            
-            <select class="form-select" asp-for="Turno.SeccionId" aria-label="Default select example">
+            <div class="form-group col-sm-3 mx-auto">
+            <h5 class="card-title">Seleccione la sección</h5>
+                <select class="form-select" asp-for="Turno.Tramite.SeccionId" aria-label="Default select example" id="seccion">
                     @foreach(var U in Model.Secciones) {
                         @if(U.Id == 1) {
                             <option value=@U.Id selected>@U.Nombre</option>
@@ -31,12 +30,23 @@
             </select>
             </div>
 
-            <div class="form-group col-sm-6 mx-auto">
-                <h5>seleccione fecha y hora</h5>
-                @*<input asp-for="Turno.FechaHora" class="form-control" value="@DateTime.Now.ToString("s")" />*@
-                <input asp-for="Turno.FechaHora" id="horaFecha" class="form-control" asp-format="{0:dd/MM/yyyy hh:mm tt}" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")"/>
+            <div class="form-group col-sm-3 mx-auto">
+                <h5 class="card-title">Seleccione el tramite</h5>
+                <select id="tramite" class="form-select" asp-for="Turno.TramiteId">
+                  
+                </select>               
+            </div>
 
-                <div id="horaFechaHelp" class="form-text">Por favor elija un horario entre las 9 y las 2 de la tarde y recuerde que las horas son cada 30 minutos.</div>
+            <div class="form-group col-sm-3 mx-auto">
+                <h5 class="card-title">Seleccione el día</h5>
+                <input type="date" id="fecha" class="form-control" asp-for="Turno.Fecha">
+            </div>
+
+
+            <div class="form-group col-sm-3 mx-auto">
+                <h5 class="card-title">Seleccione la hora</h5>
+                <select id="hora" class="form-select" asp-for="Turno.Hora">
+                </select>
             </div>
         </div>
         <div class="card-footer">            
@@ -47,4 +57,128 @@
 </div>
 
 
-<script src="~/css/AgendarHoraGeneral.js"></script>
+<script src="~/js/AgendarHoraGeneral.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Obtener la fecha actual
+        var fechaActual = new Date().toISOString().split("T")[0];
+
+        // Configurar la fecha mínima y fecha por defecto en el input de fecha
+        document.getElementById("fecha").min = fechaActual;
+        document.getElementById("fecha").value = fechaActual;
+
+        // Obtener el ID de la sección seleccionada por defecto (en este caso, 1)
+        var seccionId =1;
+
+        // Realizar una solicitud Ajax para obtener trámites por sección al cargar la página
+        $.ajax({
+            url: '@Url.Action("ObtenerTramitesPorSeccion", "Turnos")',
+            type: 'GET',
+            data: { seccionId: seccionId },
+            success: function (data) {
+                // Limpiar el segundo select
+                $("#tramite").empty();
+
+                // Agregar opciones al segundo select con los trámites
+                $.each(data, function (i, tramite) {
+                    $("#tramite").append($('<option>', {
+                        value: tramite.id,
+                        text: tramite.nombre
+                    }));
+                });
+
+                // Puedes realizar otras acciones aquí si es necesario
+            },
+            error: function (error) {
+                console.error("Error al obtener trámites: " + error);
+            }
+        });
+
+        // Llamar a la función para cargar las horas al cargar la página
+        cargarHorasDisponibles(fechaActual, seccionId);
+
+        // Manejar el cambio en el primer select
+        $("#seccion").change(function () {
+            var seccionId = $(this).val();
+
+            // Realizar una solicitud Ajax para obtener trámites por sección
+            $.ajax({
+                url: '@Url.Action("ObtenerTramitesPorSeccion", "Turnos")',
+                type: 'GET',
+                data: { seccionId: seccionId },
+                success: function (data) {
+                    // Limpiar el segundo select
+                    $("#tramite").empty();
+
+                    // Agregar opciones al segundo select con los trámites
+                    $.each(data, function (i, tramite) {
+                        $("#tramite").append($('<option>', {
+                            value: tramite.id,
+                            text: tramite.nombre
+                        }));
+                    });
+
+                    // Puedes realizar otras acciones aquí si es necesario
+                },
+                error: function (error) {
+                    console.error("Error al obtener trámites: " + error);
+                }
+            });
+
+            // Llamar a la función para cargar las horas al cambiar la sección
+            cargarHorasDisponibles(fechaActual, seccionId);
+        });
+
+        // Manejar el cambio en el input de fecha
+        $("#fecha").change(function () {
+            var fechaSeleccionada = $(this).val();
+            var seccionId = $("#seccion").val();
+
+            // Llamar a la función para cargar las horas al cambiar la fecha
+            cargarHorasDisponibles(fechaSeleccionada, seccionId);
+        });
+
+        // Función para cargar las horas disponibles
+        function cargarHorasDisponibles(fecha, seccionId) {
+            $.ajax({
+                url: '@Url.Action("ObtenerHorasOcupadasPorFechaYSeccion", "Turnos")',
+                type: 'GET',
+                data: { fecha: fecha, seccionId: seccionId },
+                success: function (horasOcupadas) {
+                    // Lista de todas las horas posibles
+                    var horasPosibles = ["08:30", "08:40", "08:50", "09:00", "09:10", "09:20", "09:30", "09:40", "09:50", "10:00", "10:10", "10:20", "10:30", "10:40", "10:50", "11:00", "11:10", "11:20", "11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30", "12:40", "12:50", "13:00", "13:10", "13:20", "13:30", "13:40", "13:50", "14:00"];
+
+                    // Filtrar las horas ocupadas de las posibles
+                    var horasDisponibles = horasPosibles.filter(function (hora) {
+                        return horasOcupadas.indexOf(hora) === -1;
+                    });
+
+                    // Limpiar el tercer select
+                    $("#hora").empty();
+
+                    if (horasDisponibles.length > 0) {
+                        // Agregar opciones al tercer select con las horas disponibles
+                        $.each(horasDisponibles, function (i, hora) {
+                            $("#hora").append($('<option>', {
+                                value: hora,
+                                text: hora
+                            }));
+                        });
+                    } else {
+                        // Mostrar mensaje si no hay horas disponibles
+                        $("#hora").after('<p>No quedan horas disponibles para esta fecha y sección.</p>');
+                    }
+
+                    // Puedes realizar otras acciones aquí si es necesario
+                },
+                error: function (error) {
+                    console.error("Error al obtener horas ocupadas: " + error);
+                }
+            });
+        }
+    });
+
+</script>
+

@@ -7,15 +7,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <div class="btn-group-vertical" role="group">
-                     <div class="btn-container">
-                        <a class="btn btn-primary" asp-controller="Auth" asp-action="LoginIn">Ingresar con RUN</a>
+                <div class="btn-group-vertical w-100" role="group">
+                    <div class="btn-container w-100" style="margin-top:2%">
+                        <a class="btn w-50 text-white" style="background-color:#6A86C3; font-size: 30px" asp-controller="Auth" asp-action="LoginIn">Inicio Usuario</a>
                     </div>
-                   @* <div class="btn-container">
-                        <a class="btn" style="background-color: #093f75" asp-controller="Auth" asp-action="LoginIn"><img src="~/img/Clave unica.svg" /></a>
-                    </div>*@
+                    <div class="btn-container w-100" style="margin-top:3%;margin-bottom:5%">
+                        <a class="btn btn-primary w-50 btn-outline-dark text-black" style="background-color:#ffff" asp-controller="Auth" asp-action="LoginTrabajador">Inicio Trabajador</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

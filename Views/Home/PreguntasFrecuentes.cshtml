@@ -1,0 +1,109 @@
+﻿@model Sugerencia
+@{
+    ViewData["Title"] = "Preguntas Frecuentes";
+}
+
+<div class="container mt-5">
+
+    <div class="accordion" id="accordionExample">
+
+        <!-- Pregunta 1 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingOne">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" stype="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    ¿Cómo puedo agendar una cita en la página municipal?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Para agendar una cita, por favor visite nuestra página web y seleccione la opción "Agendar Cita". Llene el formulario con la información requerida, como su nombre, correo electrónico, y el tipo de servicio que necesita. Una vez completado, seleccione una fecha y hora disponible para su cita.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingTwo">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    ¿Puedo realizar mi trámite completamente en línea?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Aunque puede agendar su cita en línea, los trámites deben realizarse de manera presencial en nuestras oficinas. Nuestro sistema en línea está diseñado para facilitar la programación de su visita.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingThree">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    ¿Es posible cambiar la fecha o la hora de mi cita después de haberla agendado?
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Sí, puede editar su cita accediendo a su perfil en nuestra página web y seleccionando la opción "Editar Cita". Allí podrá cambiar la fecha y la hora según la disponibilidad. Le recomendamos hacer estos cambios con al menos 24 horas de anticipación.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingFour">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    ¿Qué debo hacer si necesito cancelar mi cita?
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Si necesita cancelar su cita, ingrese a su perfil en nuestra página y seleccione "Eliminar Cita". Le pedimos que cancele con la mayor anticipación posible para liberar el espacio para otros usuarios.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingFive">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    ¿Qué sucede si no me presento a mi cita agendada?
+                </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Si no se presenta a su cita y no la ha cancelado con anticipación, puede haber restricciones para agendar citas futuras. Por favor, notifíquenos lo antes posible si no puede asistir.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 6 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingSix">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    ¿Necesito crear una cuenta para agendar una cita?
+                </button>
+            </h2>
+            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    No es obligatorio registrarse en nuestra plataforma, ya que se utilizará el sistema de identificación digital Clave Única. Este sistema le permite acceder a diversos servicios públicos y privados con una sola clave. De esta manera, se garantiza la seguridad y la confidencialidad de sus datos personales.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 7 -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingSeven">
+                <button style="background-color:#6A86C3" class="accordion-button text-white rounded-top-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                    ¿Qué pasa si tengo problemas para agendar mi cita en línea?
+                </button>
+            </h2>
+            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Si experimenta dificultades para agendar su cita a través de nuestra página web, por favor contáctenos directamente a través de nuestro teléfono de atención al cliente o envíenos un correo electrónico. Nuestro equipo de soporte estará encantado de asistirle y asegurarse de que pueda programar su cita sin inconvenientes.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

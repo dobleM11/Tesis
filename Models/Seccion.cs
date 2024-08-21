@@ -5,5 +5,6 @@
         public string Descripcion { get; set; }
         public List<Turno> Turnos { get; set; }
         public List<Empleado> Empleados { get; set; }
+        public List<Tramite> Tramites { get; set; }
     }
 }

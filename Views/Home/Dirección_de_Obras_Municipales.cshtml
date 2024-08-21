@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Secciones";
+}
+
+
+<div class="container">
+    <div class="card mb-3">
+        <h5 class="card-header text-white" style="background-color:#6A86C3" >Dirección de Obras Municipales (DOM)</h5>
+        <div class="card-body">
+            <h5 class="card-title">Descripción</h5>
+            <p class="card-text">
+                La Dirección de Obras Municipales es una entidad encargada de supervisar y autorizar proyectos de construcción y urbanización, asegurando el cumplimiento de las leyes y regulaciones correspondientes. Además, se encarga de fiscalizar obras en uso, aplicar normas ambientales, mantener un catastro actualizado y dirigir construcciones municipales, entre otras funciones.
+            </p>
+
+            <h5 class="card-title">Trámites:</h5>
+            <div class="accordion" id="Area1">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_1-1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1-1" aria-expanded="true" aria-controls="collapse_1-1">
+                            Certificado de Obras Municipales
+                        </button>
+                    </h2>
+                    <div id="collapse_1-1" class="accordion-collapse collapse" aria-labelledby="heading_1-1" data-bs-parent="#Area1">
+                        <div class="accordion-body">
+                            <p>
+                                Las DOM son las encargadas de velar por el cumplimiento, a nivel
+                                comunal, de las normas que regulan la planificación urbana y la
+                                edificación, por ello, quienes quieran llevar a cabo un proyecto de
+                                edificación o urbanización deben obtener en estos servicios la
+                                autorización respectiva y los distintos certificados emitidos por la DOM.
+                            </p>
+                            <p>Documentos necesarios:</p>
+                            <ul>
+                                <li>Copia de cedula de identidad del solicitante.</li>
+                                <li>Copia simple de dominio vigente.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_1-2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1-2" aria-expanded="true" aria-controls="collapse_1-2">
+                            Permiso de Edificación
+                        </button>
+                    </h2>
+                    <div id="collapse_1-2" class="accordion-collapse collapse" aria-labelledby="heading_1-2" data-bs-parent="#Area1">
+                        <div class="accordion-body">
+                            <p>
+                                El permiso de edificación o permiso de obra menor es una autorización
+                                para poder construir una obra. Se trata de la aprobación del conjunto de
+                                planos, informes técnicos, declaraciones y documentos que contienen
+                                el proyecto elaborado por el arquitecto que se contrató para tales fines.
+                            </p>
+                            <p>Documentos necesarios:</p>
+                            <ul>
+                                <li>Solicitud firmada por el propietario y arquitecto del proyecto.</li>
+                                <li>Fotocopia del certificado de informaciones previas.</li>
+                                <li>Formulario unico de estadisticas de edificación.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+            <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn" style="background-color:#6A86C3; color:white">Pedir hora</a>
+        </div>
+    </div>
+</div>

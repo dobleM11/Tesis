@@ -1,0 +1,37 @@
+﻿@model Sugerencia
+@{
+    ViewData["Title"] = "Sugerencias";
+}
+
+<div class="card col-md-10 mx-auto" style="margin-top:10px;">
+    <form asp-action="SugerenciasReclamos" method="post">
+        <div class="card-header">
+            <h2>Realizar sugerencia</h2>
+        </div>
+        <div class="card-body row">
+            <div>
+                <h5>Seleccione tipo de sugerencia</h5>
+                <select id="Sugerencia" class="form-select col-6" asp-for="TipoSugerencia">
+                    <option value="Sugerencia">Sugerencia</option>
+                    <option value="Reclamo">Reclamo</option>
+                </select>
+            </div>
+            <div id="seccionReclamo">
+                <h5>Seleccione la sección a la que se dirige:</h5>
+                <select id="Seccion" class="form-select col-6" asp-for="SeccionId">
+                    <option value="1">Dirección de Obras Municipales</option>
+                    <option value="2">Dirección de Desarrollo Comunitario</option>
+                    <option value="3">General</option>
+                </select>
+            </div>
+            <div>
+                <h5>Ingrese su comentario:</h5>
+                <textarea class="form-control" asp-for="Texto" rows="6"></textarea>
+            </div>
+        </div>
+        <div class="card-footer align-content-center">
+            <button type="submit" class="btn btn-primary" id="Ingresar">Enviar</button>
+            <a asp-controller="Turnos" asp-action="MiUsuario" class="btn btn-danger float-right">Cancelar</a>
+        </div>
+    </form>
+</div>

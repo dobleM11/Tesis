@@ -1,5 +1,7 @@
 ﻿@using System.Security.Claims;
 @{
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+    bool isUser = User.IsInRole("1");
 }
 
 <!DOCTYPE html>
@@ -39,19 +41,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end doc-icon flex-row-reverse">
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Inicio" style="white-space: nowrap;">Secciones</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Secciones" style="white-space: nowrap;">Secciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Sugerencias" style="white-space: nowrap;">Preguntas frecuentes</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="PreguntasFrecuentes" style="white-space: nowrap;">Preguntas frecuentes</a>
                         </li>
                         <li class="nav-item">
-                            @if(User.Identity.IsAuthenticated) {
+                            @if(isAuthenticated && isUser==false) {
+                                <a class="btn" asp-controller="Trabajador" asp-action="dashboard">
+                                    <span style="white-space: nowrap;">Administración <i class="fa-solid fa-user"></i></span>
+                                </a>
+                            } else if(isAuthenticated && isUser) {
                                 <a class="btn" asp-controller="Turnos" asp-action="MiUsuario">
                                     <span style="white-space: nowrap;">MiUsuario <i class="fa-solid fa-user"></i></span>
                                 </a>
                             } else {
                                 <a class="btn" asp-controller="Home" asp-action="Login">
-                                    <span style="white-space: nowrap;">MiUsuario <i class="fa-solid fa-user"></i></span>
+                                    <span style="white-space: nowrap;">Iniciar Sesión <i class="fa-solid fa-user"></i></span>
                                 </a>
                             }
                         </li>
@@ -70,12 +76,12 @@
 
 
     <footer class="border-top footer fixed-bottom top-100">
-        <div class="container-fluid" style="background-color:#6A86C3; color:white">
+        <div class="container-fluid pt-3" style="background-color:#6A86C3; color:white">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-lg-4 text-lg-start text-md-start text-center">
-                        <h4><a class="nav-link px-2 text-white" asp-controller="Home" asp-action="Sugerencias">Sugerencias</a></h4>
-                        <h4><a class="nav-link px-2 text-white" asp-controller="Home" asp-action="Sugerencias">Preguntas frecuentes</a></h4>
+                        <h4><a class="nav-link px-2 text-white" asp-controller="Home" asp-action="SugerenciasReclamos">Sugerencias y Reclamos</a></h4>
+                        <h4><a class="nav-link px-2 text-white" asp-controller="Home" asp-action="PreguntasFrecuentes">Preguntas frecuentes</a></h4>
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-center">
@@ -100,7 +106,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@model UsuarioTramitesViewModel;
 
 @{
     ViewData["Title"] = "Inicio";
@@ -9,7 +10,7 @@
 }
 
 @*carousel para dispositivos grandes*@
-<div class="container d-none d-lg-block"> 
+<div class="container d-none d-lg-block">
     <div id="carouselInicio" class="carousel slide d-flex justify-content-center" data-bs-ride="carousel">
         <div class="carousel-indicators">
             @for(int i = 0; i < archivos1.Length; i++) {
@@ -67,79 +68,48 @@
 
 <div class="container pt-5">
     <h3 class="text-center">Trámites frecuentes</h3>
-
     <div class="accordion container" id="accordionTramitesFrecuentes">
-        @*es un ciclo for para crear los acordeones de forma automatica*@
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_1">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1" aria-expanded="true" aria-controls="collapse_1">
-                    Trámite 1
-                </button>
-            </h2>
-            <div id="collapse_1" class="accordion-collapse collapse show" aria-labelledby="heading_1" data-bs-parent="#accordionTramitesFrecuentes">
-                <div class="accordion-body">
-                    Con este proceso, puedes realizar tu solicitud de forma fácil y rápida, sin tener que hacer filas o esperar mucho tiempo.
-                    @*<a asp-controller="Home" asp-action="Dirección_de_Aseo_y_Ornato">Ver más</a>*@
-                </div>
-                <div class="card-footer text-end">
-                    <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right">Pedir hora</a>
-                </div>
-            </div>
-        </div>
-            
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_2">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_2" aria-expanded="false" aria-controls="collapse_2">
-                    Trámite 2
-                </button>
-            </h2>
-            <div id="collapse_2" class="accordion-collapse collapse" aria-labelledby="heading_2" data-bs-parent="#accordionTramitesFrecuentes">
-                <div class="accordion-body">
-                    Con este proceso, puedes realizar tu solicitud de forma fácil y rápida, sin tener que hacer filas o esperar mucho tiempo.
-                    @*<a asp-controller="Home" asp-action="Dirección_de_Aseo_y_Ornato">Ver más</a>*@
-                </div>
-                <div class="card-footer text-end">
-                    <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right">Pedir hora</a>
+        @foreach(var tramite in Model.Tramites) {
+            <div class="accordion-item mb-3">
+                <h2 class="accordion-header" id="heading_@tramite.Id">
+                    <button class="accordion-button text-white @((tramite.Id == 1) ? "" : "collapsed")" style="background-color:#6A86C3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@tramite.Id" aria-expanded="@((tramite.Id == 1) ? "true" : "false")" aria-controls="collapse_@tramite.Id">
+                        @tramite.Nombre
+                    </button>
+                </h2>
+                <div id="collapse_@tramite.Id" class="accordion-collapse collapse @(tramite.Id == 1 ? "show" : "")" aria-labelledby="heading_@tramite.Id" data-bs-parent="#accordionTramitesFrecuentes">
+                    <div class="accordion-body">
+                        @tramite.Descripcion
+                    </div>
+                    <div class="card-footer text-end">
+                        @if(User.Identity.IsAuthenticated) {
+                            @if(Model.Usuario.Faltas >= 3) {
+                                <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right disabled">Pedir hora</a>
+                            } else {
+                                <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right">Pedir hora</a>
+                            }
+                        } else {
+                            <a asp-controller="Auth" asp-action="LoginIn" class="btn btn-outline-dark float-right">Pedir hora</a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_3">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_3" aria-expanded="false" aria-controls="collapse_3">
-                    Trámite 3
-                </button>
-            </h2>
-            <div id="collapse_3" class="accordion-collapse collapse" aria-labelledby="heading_3" data-bs-parent="#accordionTramitesFrecuentes">
-                <div class="accordion-body">
-                    Con este proceso, puedes realizar tu solicitud de forma fácil y rápida, sin tener que hacer filas o esperar mucho tiempo.
-                    @*<a asp-controller="Home" asp-action="Dirección_de_Aseo_y_Ornato">Ver más</a>*@
-                </div>
-                <div class="card-footer text-end">
-                    <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right">Pedir hora</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_4">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_4" aria-expanded="false" aria-controls="collapse_4">
-                    Trámite 4
-                </button>
-            </h2>
-            <div id="collapse_4" class="accordion-collapse collapse" aria-labelledby="heading_4" data-bs-parent="#accordionTramitesFrecuentes">
-                <div class="accordion-body">
-                    Con este proceso, puedes realizar tu solicitud de forma fácil y rápida, sin tener que hacer filas o esperar mucho tiempo.
-                    @*<a asp-controller="Home" asp-action="Dirección_de_Aseo_y_Ornato">Ver más</a>*@
-                </div>
-                <div class="card-footer text-end">
-                    <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-dark float-right">Pedir hora</a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 
-   <div class="pt-3 text-center">
-        <a href="" class="btn btn-lg" role="button" aria-pressed="false" style="background-color:#6A86C3; color:white">Ver más</a>
-   </div>
-</div>      
+
+    <div class="pt-3 text-center">
+        <a asp-controller="Home" asp-action="Secciones" class="btn btn-lg" role="button" aria-pressed="false" style="background-color:#6A86C3; color:white">Ver más</a>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    function mostrarAlerta() {
+        alert("Debe asistir a la municipalidad para poder habilitar nuevamente la opción de pedir hora.");
+    }
+
+    $(document).ready(function () {
+        if (@Model.Usuario.Faltas == 3) {
+            mostrarAlerta();
+        }
+    });
+</script>

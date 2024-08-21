@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims;
 @model UsuarioTurnosViewModel
 @{
-    ViewData["Title"] = "MiUsuario";
+    ViewData["Title"] = "Historial";
 }
 <link rel="stylesheet" href="~/css/MiUsuario.css" />
 
@@ -30,7 +30,7 @@
 <div class="card col-md-10 mx-auto" style="margin-top:10px;">
     <div class="card-body">
         <div class="derecha">
-            <a asp-controller="Turnos" asp-action="Historial" class="btn mb-2" id="btnIr" style="background-color:#6A86C3; color:white">Historial</a>
+            <a asp-controller="Turnos" asp-action="MiUsuario" class="btn mb-2" id="btnIr" style="background-color:#6A86C3; color:white">Volver</a>
         </div>
         <div class="container">
            
@@ -41,8 +41,7 @@
                         <col style="width: 10%;">
                         <col style="width: 50%;">
                         <col style="width: 10%;">
-                        <col style="width: 10%;">
-                        <col style="width: 10%;">
+                        <col style="width: 20%;">
                     </colgroup>
                     <thead>
                         <tr class="text-center">
@@ -50,7 +49,7 @@
                             <th scope="col">Día/Mes/Año</th>
                             <th scope="col">Hora</th>
                             <th scope="col">Sección</th>
-                            <th colspan="3"></th>
+                            <th colspan="2"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,15 +74,9 @@
                                         </button>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <a asp-controller="Turnos" asp-action="EditarHora" asp-route-turnoId="@U.Id" class="text-warning d-block">
+                                        <a asp-controller="" asp-action="" asp-route-turnoId="@U.Id" class="text-warning d-block" onclick="alert('Esta funcionalidad se implementará a futuro'); return false;">
                                             <span class="material-symbols-outlined align-middle">edit_calendar</span>
-                                            Editar
-                                        </a>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <a asp-controller="Turnos" asp-action="EliminarHora" asp-route-turnoId="@U.Id" class="text-danger d-block" onclick="return confirm('¿Deseas eliminar su hora?')">
-                                            <span class="material-symbols-outlined align-middle">event_busy</span>
-                                            Eliminar
+                                            Reclamo o sugerencia
                                         </a>
                                     </td>
                                 </tr>
@@ -99,24 +92,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="col-md-8 mx-auto text-center" style="margin-top: 10px; margin-bottom: 50px;">
-            @if(Model.Usuario.Faltas >= 3) {
-                <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn btn-outline-primary disabled" style="color:#6A86C3">
-                    <i class="fa-regular fa-calendar-plus"></i>
-                    Agendar Hora
-                </a>
-            } else {
-                <a asp-controller="Turnos" asp-action="AgendarHoraGeneral"
-                   class="btn btn-outline-primary"
-                   style="color:#6A86C3; background-color:transparent;"
-                   onmouseover="this.style.color='#ffffff'; this.style.backgroundColor='#6A86C3';"
-                   onmouseout="this.style.color='#6A86C3'; this.style.backgroundColor='transparent';">
-                    <i class="fa-regular fa-calendar-plus"></i>
-                    Agendar Hora
-                </a>
-
-            }
         </div>
     </div>
 </div>

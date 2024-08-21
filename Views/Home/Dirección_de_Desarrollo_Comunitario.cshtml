@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Secciones";
+}
+
+
+<div class="container">
+    <div class="card">
+        <h5 class="card-header text-white" style="background-color:#6A86C3">Dirección de Desarrollo Comunitario</h5>
+        <div class="card-body">
+            <h5 class="card-title">Descripción</h5>
+            <p class="card-text">
+                La Dirección de Desarrollo Comunitario impulsa el desarrollo social en la comuna, asesorando al Alcalde, apoyando organizaciones, proponiendo medidas en diversas áreas y administrando programas gubernamentales. Supervisa directamente Servicios Sociales, Participación Ciudadana, Convenio JUNJI VTF y Oficina de Logística.
+            </p>
+
+            <h5 class="card-title">Trámites:</h5>
+            <div class="accordion" id="Area2">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_1" aria-expanded="true" aria-controls="collapse_1">
+                            Rebaja en Tratamientos Medicos
+                        </button>
+                    </h2>
+                    <div id="collapse_1" class="accordion-collapse collapse" aria-labelledby="heading_1" data-bs-parent="#Area2">
+                        <div class="accordion-body">
+                            <p>Consiste en la elaboración de un documento que acredita la condición socioeconómica de un individuo y/o familia, a través del cual se puede optar a diferentes beneficios locales y gubernamentales.</p>
+                            <p>Documentos necesarios:</p>
+                            <ul>
+                                <li>Fotocopia de cedula de identidad.</li>
+                                <li>Acreditación de ingresos familiares.</li>
+                                <li>Certificados medicos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_2" aria-expanded="true" aria-controls="collapse_2">
+                            Rebaja en Mensualidad de Colegios Particulares
+                        </button>
+                    </h2>
+                    <div id="collapse_2" class="accordion-collapse collapse" aria-labelledby="heading_2" data-bs-parent="#Area2">
+                        <div class="accordion-body">
+                            <p>Consiste en la elaboración de un documento que acredita la condición socioeconómica de un individuo y/o familia, a través del cual se puede optar a diferentes beneficios locales y gubernamentales.</p>
+                            <p>Documentos necesarios:</p>
+                            <ul>
+                                <li>Fotocopia de cedula de identidad del apoderado y estudiante.</li>
+                                <li>Acreditación de ingresos familiares.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+            <a asp-controller="Turnos" asp-action="AgendarHoraGeneral" class="btn" style="background-color:#6A86C3; color:white">Pedir hora</a>
+        </div>
+    </div>   
+</div>

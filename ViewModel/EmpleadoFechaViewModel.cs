@@ -1,8 +1,8 @@
 ﻿using Tesis.Models;
 
 namespace Tesis.ViewModel {
-    public class EmpleadoTurnosViewModel {
+    public class EmpleadoFechaViewModel {
         public Empleado Empleado { get; set; }
-        public List<Turno> Turnos { get; set; }
+        public DateTime fecha { get; set; }
     }
 }

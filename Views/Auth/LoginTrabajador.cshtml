@@ -5,12 +5,12 @@
 <link rel="stylesheet" href="~/css/loginIn.css" />
 
     <div class="text-center card col-md-8 mx-auto">
-        <h1 class="card-title">Iniciar sesión</h1>
+        <h1 class="card-title">Iniciar sesión trabajador</h1>
 
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center">
-                    <form asp-action="LoginIn" method="post">
+                    <form asp-action="LoginTrabajador" method="post">
                         <div class="mb-3">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         </div>
@@ -25,8 +25,8 @@
                             </button>
                         </div>
                         <div class="mb-3 ">
-                            <button type="submit" class="btn btn-lg" id="Ingresar" style="background-color:#6A86C3; color:white">Ingresar</button>
-                            <a asp-controller="Home" asp-action="Login" class="btn btn-lg btn-danger" id="Regresar">Regresar</a>
+                        <button type="submit" class="btn btn-lg" id="Ingresar" style="background-color:#6A86C3; color:white">Ingresar</button>
+                        <a asp-controller="Home" asp-action="Login" class="btn btn-lg btn-danger" id="Regresar">Regresar</a>
                         </div>
                     </form>
                 </div>
