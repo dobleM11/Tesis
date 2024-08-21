@@ -171,8 +171,5 @@ namespace Tesis.Controllers {
                 return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "archivo.xlsx");
             }
         }
-
-
-
     }
 }
